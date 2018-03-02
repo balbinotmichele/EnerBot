@@ -1,0 +1,17 @@
+{
+  "name": "bot",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "TOKEN=\"453482892:AAF2HFXaazYQDsDAfTOyPtZiKylCNHYykHw\" node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "telegraf": "^3.18.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.14.0"
+  }
+}
