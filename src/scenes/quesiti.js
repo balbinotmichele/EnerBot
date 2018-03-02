@@ -8,11 +8,11 @@ const Markup = require('telegraf/markup');
         host     : 'localhost',
         user     : 'root',
         password : '',
-        database : 'dati-bot'
+        database : 'EnerbotDb'
     });
     connection.connect();
 
-    connection.query('SELECT Azienda FROM nomi_aziende', function (error, results, fields) {
+    connection.query('SELECT Domanda FROM FAQ WHERE Gruppo LIKE 2', function (error, results, fields) {
       if (error) {
 
         return reject(error);
