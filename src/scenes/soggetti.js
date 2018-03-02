@@ -23,6 +23,26 @@ const Markup = require('telegraf/markup')
 
     connection.end();
 });
+, getAnswer = (dom) => new Promise((resolve, reject) => {
+  const risultati = []
+    , connection = mysql.createConnection({
+        host     : 'localhost',
+        user     : 'root',
+        password : '',
+        database : 'EnerbotDb'
+    });
+    connection.connect();
+
+    connection.query(`SELECT Risposta FROM FAQ WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
+      if (error) {
+        return reject(error);
+      };
+
+      return resolve(results.map(elm => elm.Risposta));
+    });
+
+    connection.end();
+});
 
 module.exports = async Scene => {
   const index = new Scene('Soggetti certificatori')
@@ -46,7 +66,7 @@ module.exports = async Scene => {
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
       console.info(`Navigation from Soggetti certificatori to ${elm}`);
-      ctx.reply(getRisposta(elm[0]), sceneKeyboard);
+      ctx.reply(getAnswer(elm[0]), sceneKeyboard);
     });
   });
 
