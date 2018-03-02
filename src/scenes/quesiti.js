@@ -1,5 +1,5 @@
 /*global require,module,console*/
-const Markup = require('telegraf/markup');
+const Markup = require('telegraf/markup')
 , {setTimeout} = require('timers')
 , mysql = require('mysql')
 , findQuestions = () => new Promise((resolve, reject) => {
@@ -24,9 +24,9 @@ const Markup = require('telegraf/markup');
     connection.end();
 });
 
-module.exports = Scene => {
+module.exports = async Scene => {
   const index = new Scene('Quesiti tecnico-procedurali')
-    , sceneMenu = findQuestions();
+    , sceneMenu = await findQuestions()
     , sceneKeyboard = Markup
       .keyboard(sceneMenu)
       .resize()

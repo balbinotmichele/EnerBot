@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "mysql": "github:mysqljs/mysql",
     "telegraf": "^3.18.0"
   },
   "devDependencies": {

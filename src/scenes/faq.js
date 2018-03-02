@@ -28,7 +28,9 @@ module.exports = Scene => {
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
       console.info(`Navigation from index to ${elm}`);
-      ctx.reply(getRisposta(elm[0]), sceneKeyboard);
+      //ctx.reply(getRisposta(elm[0]), sceneKeyboard);
+      await index.leave();
+      await ctx.scene.enter(elm[0]);
     });
   });
 

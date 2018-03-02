@@ -1,5 +1,5 @@
 /*global require,module,console*/
-const Markup = require('telegraf/markup');
+const Markup = require('telegraf/markup')
 , {setTimeout} = require('timers')
 , mysql = require('mysql')
 , findQuestions = () => new Promise((resolve, reject) => {
@@ -14,19 +14,18 @@ const Markup = require('telegraf/markup');
 
     connection.query('SELECT Domanda FROM FAQ WHERE Gruppo LIKE 1', function (error, results, fields) {
       if (error) {
-
         return reject(error);
       };
 
-      return resolve(results.map(elm => elm.Azienda));
+      return resolve(results.map(elm => elm.Domanda));
     });
 
     connection.end();
 });
 
-module.exports = Scene => {
+module.exports = async (Scene) => {
   const index = new Scene('Certificazione energetica')
-    , sceneMenu = findQuestions();
+    , sceneMenu = await findQuestions()
     , sceneKeyboard = Markup
       .keyboard(sceneMenu)
       .resize()
