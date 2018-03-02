@@ -18,7 +18,7 @@ const Markup = require('telegraf/markup')
         return reject(error);
       };
 
-      return resolve(results.map(elm => elm.Azienda));
+      return resolve(results.map(elm => elm.Domanda));
     });
 
     connection.end();
