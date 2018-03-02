@@ -25,7 +25,7 @@ const Markup = require('telegraf/markup');
 });
 
 module.exports = Scene => {
-  const index = new Scene('Certificazione energetica')
+  const index = new Scene('Quesiti tecnico-procedurali')
     , sceneMenu = findQuestions();
     , sceneKeyboard = Markup
       .keyboard(sceneMenu)
@@ -33,19 +33,19 @@ module.exports = Scene => {
       .extra();
 
   index.enter(ctx => {
-    console.info(`Serving Certificazione energetica to ${ctx.session.username}`);
+    console.info(`Serving Quesiti tecnico-procedurali to ${ctx.session.username}`);
     ctx.reply('Qual è la tua domanda?', sceneKeyboard);
   });
 
   index.hears('Indietro', async ctx => {
-    console.info(`Navigation from Certificazione energetica to FAQ`);
+    console.info(`Navigation from Quesiti tecnico-procedurali to FAQ`);
     await index.leave();
     await ctx.scene.enter('FAQ');
   });
 
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
-      console.info(`Navigation from Certificazione energetica to ${elm}`);
+      console.info(`Navigation from Quesiti tecnico-procedurali to ${elm}`);
       ctx.reply(getRisposta(elm[0]), sceneKeyboard);
     });
   });

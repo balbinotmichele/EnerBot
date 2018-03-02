@@ -15,12 +15,12 @@ module.exports = Scene => {
       .extra();
 
   index.enter(ctx => {
-    console.info(`Serving index to ${ctx.session.username}`);
+    console.info(`Serving FAQ to ${ctx.session.username}`);
     ctx.reply('Qual è la tua domanda?', sceneKeyboard);
   });
 
   index.hears('Indietro', async ctx => {
-    console.info(`Navigation from index to Menu`);
+    console.info(`Navigation from FAQ to Menu`);
     await index.leave();
     await ctx.scene.enter('menu');
   });
