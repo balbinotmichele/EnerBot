@@ -27,7 +27,7 @@ const Markup = require('telegraf/markup')
           database : 'EnerbotDb'
       });
       connection.connect();
-      let query = "INSERT INTO Lettura(Contatore, DataOra) VALUES ('"+contatore+"', '"+ new Date().toISOString() +"', '"+  +"')";
+      let query = "INSERT INTO Lettura(Contatore, DataOra) VALUES ('"+contatore+"', '"+ new Date().toISOString() +"', '"+ codapp +"')";
       console.log(query);
       connection.query(query, function (error, results, fields) {
       });
