@@ -23,6 +23,8 @@ const Markup = require('telegraf/markup')
           join abita a2 on app2.CodAppartamento = a2.CodAppartamento and a2.attuale = true
           join utente u2 on u2.CodUtente = '${CodUte}'
       )
+      join Utente u
+      ON u.CodUte = a.CodUte
     ) group by CodUtente
     order by punti desc`, function (error, results, fields) {
       if (error) {
@@ -50,7 +52,6 @@ module.exports = Scene => {
         for (i=0;i<10;i++){
           ctx.reply(`'${classifica[i].CodUtente}' con '${classifica[i].Punteggio}'`, sceneKeyboard);
         }
-        ctx.reply(classifica.CodUtente, sceneKeyboard);
         i=0;
         classifica.forEach(elm, ctx => {
           i++;

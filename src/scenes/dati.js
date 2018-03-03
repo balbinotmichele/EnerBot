@@ -10,12 +10,12 @@ const Markup = require('telegraf/markup')
           database : 'EnerbotDb'
       });
       connection.connect();
-      let query = "SELECT CodAppartamento FROM Abita WHERE CodUtente = " + userid + "' AND Attuale = 1";
+      let query = "SELECT CodAppartamento FROM abita WHERE CodUtente = " + userid + "' AND Attuale = 1";
       console.log(query);
       connection.query(query, function (error, results, fields) {
         return resolve(results.map(elm => elm.CodAppartamento));
       });
-  
+
       connection.end();
   })
 , insertData = (contatore, codapp) => new Promise((resolve, reject) => {
@@ -31,7 +31,7 @@ const Markup = require('telegraf/markup')
       console.log(query);
       connection.query(query, function (error, results, fields) {
       });
-  
+
       connection.end();
   });
 
@@ -66,7 +66,7 @@ module.exports = async Scene => {
         ctx.reply("Inserire valori numerici");
     });
 
-    
+
 
   return index;
 };

@@ -12,7 +12,7 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
-    connection.query('SELECT Domanda FROM FAQ WHERE Gruppo LIKE 3', function (error, results, fields) {
+    connection.query('SELECT Domanda FROM faq WHERE Gruppo LIKE 3', function (error, results, fields) {
       if (error) {
 
         return reject(error);
@@ -33,7 +33,7 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
-    connection.query(`SELECT Risposta FROM FAQ WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
+    connection.query(`SELECT Risposta FROM faq WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
       if (error) {
         return reject(error);
       };
