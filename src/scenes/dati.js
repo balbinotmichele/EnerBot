@@ -52,10 +52,10 @@ module.exports = async Scene => {
 
     //index.hears(/[^abcdefghijklmnopqrstuvwxyz]/i, async ctx => {
     index.hears(/[0-9]/i, async ctx => {
-        let codapp = await getUserData(ctx.from.userId)[0]; 
+        let codapp = await getUserData(ctx.from.userId)[0];
         console.log(codapp);
-        await insertData(ctx.message.text, codapp);
-        ctx.reply("Dati inseriti");
+        //await insertData(ctx.message.text, codapp);
+        ctx.reply("Da implementare");
         await index.leave();
         await ctx.scene.enter('menu'); //da cambiare eventualmente
     });

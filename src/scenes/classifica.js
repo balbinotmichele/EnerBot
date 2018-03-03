@@ -59,13 +59,14 @@ module.exports = Scene => {
         }
         i=0;
         var posizione=0;
-        classifica.forEach(elm => {
+        /*classifica.forEach(elm => {
           i++;
           if (elm.CodUtente === ctx.from.id){
             posizione = i+1;
           }
         });
-        ctx.reply(`Ti trovi in '${posizione}' con ${classifica[i].Punteggio} `,sceneKeyboard);
+        concole.log(posizione)
+       ctx.reply(`Ti trovi in '${posizione}' con ${classifica[i].Punteggio} `,sceneKeyboard);*/
     });
 
     index.hears('Indietro', async ctx => {
