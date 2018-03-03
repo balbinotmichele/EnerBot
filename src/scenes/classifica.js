@@ -11,31 +11,34 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
-    connection.query(`SELECT CodUtente, sum(Punteggio) as punti from (
-      select CodUtente, punteggio
+    connection.query(`SELECT bb.CodUtente, sum(Punteggio) as punti from (
+      select u.CodUtente, u.Punteggio
       from appartamento app
       join abita a
       on a.CodAppartamento = app.CodAppartamento
       and a.attuale = true
-      and app.classe = (
+      and app.classe IN (
           select classe
           from appartamento app2
           join abita a2 on app2.CodAppartamento = a2.CodAppartamento and a2.attuale = true
           join utente u2 on u2.CodUtente = '${CodUte}'
       )
       join Utente u
-      ON u.CodUte = a.CodUte
-    ) group by CodUtente
-    order by punti desc`, function (error, results, fields) {
+      ON u.CodUtente = a.CodUtente
+    ) as bb group by CodUtente
+    ORDER BY punti `, function (error, results, fields) {
+
       if (error) {
         return reject(error);
       };
-
-      return resolve(results.map(elm => elm.Domanda));
+      return resolve(results.map(elm => ({
+        'CodUte': elm.CodUtente,
+        'Punteggio': elm.punti
+    })));
     });
 
     connection.end();
-})
+});
 
 module.exports = Scene => {
     const index = new Scene('Classifica settimanale')
@@ -45,22 +48,24 @@ module.exports = Scene => {
         .resize()
         .extra();
 
-    index.enter(ctx => {
-        console.info(`Serving Classifica settimanale to ${ctx.session.username}`);
-        let classifica = await getClassifica(ctx.from.id);
+    index.enter(async ctx => {
+        console.info(`Serving Classifica settimanale to ${ctx.session.username}`)
+        debugger
+        let classifica = await getClassifica(10033)
+        //let classifica = await getClassifica(ctx.from.id) da utilizzare in un utilizzo reale con dati reali
         var i=0;
         for (i=0;i<10;i++){
-          ctx.reply(`'${classifica[i].CodUtente}' con '${classifica[i].Punteggio}'`, sceneKeyboard);
+          ctx.reply(`'${classifica[i].CodUte}' con '${classifica[i].Punteggio}'`, sceneKeyboard);
         }
         i=0;
-        classifica.forEach(elm, ctx => {
+        var posizione=0;
+        classifica.forEach(elm => {
           i++;
-          if (elm.CodUtente = ctx.from.id){
-            break;
+          if (elm.CodUtente === ctx.from.id){
+            posizione = i+1;
           }
         });
-        let posizione = i+1;
-        ctx.reply(`Ti trovi in '${posizione}' con ${classifica[i].punteggio} `,sceneKeyboard);
+        ctx.reply(`Ti trovi in '${posizione}' con ${classifica[i].Punteggio} `,sceneKeyboard);
     });
 
     index.hears('Indietro', async ctx => {
@@ -68,11 +73,6 @@ module.exports = Scene => {
         await index.leave();
         await ctx.scene.enter('menu');
     });
-
-
-    function getClassifica() {
-        return "Classifica da implementare"
-    }
 
   return index;
 };

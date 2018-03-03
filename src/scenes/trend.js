@@ -11,12 +11,15 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
-    connection.query(`SELECT Punteggio, DataOra FROM utente WHERE CodUtente LIKE '${CodUte}' ORDER BY DataOra`, function (error, results, fields) {
+    connection.query(`SELECT DataOra ,Punteggio FROM utente WHERE CodUtente LIKE '${CodUte}' ORDER BY DataOra`, function (error, results, fields) {
       if (error) {
         return reject(error);
       };
 
-      return resolve(results.map(elm => elm.Domanda));
+      return resolve(results.map(elm => ({
+        'DataOra': elm.DataOra,
+        'Punteggio': elm.Punteggio
+    })));
     });
 
     connection.end();
@@ -32,19 +35,22 @@ module.exports = Scene => {
         .resize()
         .extra();
 
-    index.enter(ctx => {
+    index.enter(async ctx => {
         console.info(`Serving Trend personale to ${ctx.session.username}`);
-        let trend = getTrend(ctx.from.id);
+        let trend = await getTrend(10033);
+        console.log(trend)
+        //let trend = getTrend(ctx.from.id); da utilizzare in un utilizzo reale con dati reali
         var i=0;
-        for (i=0;i<10;i++){
-          ctx.reply(`'${trend[i].CodUtente}' con '${trend[i].Punteggio}'`, sceneKeyboard);
-        }
+        trend.forEach(elm => {
+          ctx.reply(`Il '${elm.DataOra}' avevi '${elm.Punteggio}' `,sceneKeyboard);
+        })
     });
 
     index.hears('Profilo personale', async ctx => {
         console.info(`Navigation from Trend personale to Profilo personale`);
-        await index.leave();
-        await ctx.scene.enter('Profilo personale');
+        ctx.reply('Ancora da implementare');
+        //await index.leave();
+        //await ctx.scene.enter('Profilo personale');
     });
 
     index.hears('Indietro', async ctx => {

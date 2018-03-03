@@ -11,12 +11,8 @@ const Markup = require('telegraf/markup')
         database : 'EnerbotDb'
     });
     connection.connect();
-
-<<<<<<< HEAD
-    connection.query('SELECT Domanda FROM faq WHERE Gruppo LIKE 3', function (error, results, fields) {
-=======
     connection.query('SELECT CodDomanda, Domanda FROM FAQ WHERE Gruppo LIKE 3', function (error, results, fields) {
->>>>>>> de34f80b872b138c579f4c8faef4308d06e5dc6b
+
       if (error) {
         return reject(error);
       };
@@ -35,14 +31,9 @@ const Markup = require('telegraf/markup')
         database : 'EnerbotDb'
     });
     connection.connect();
-<<<<<<< HEAD
-
-    connection.query(`SELECT Risposta FROM faq WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
-=======
     let query = `SELECT Risposta FROM FAQ WHERE CodDomanda = ${coddom}`
     console.info(query);
     connection.query(query, function (error, results, fields) {
->>>>>>> de34f80b872b138c579f4c8faef4308d06e5dc6b
       if (error) {
         return reject(error);
       };
