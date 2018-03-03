@@ -12,19 +12,19 @@ module.exports = Scene => {
         .extra();
 
     index.enter(ctx => {
-        console.info(`Serving index to ${ctx.session.username}`);
+        console.info(`Serving Trend personale to ${ctx.session.username}`);
         let trend = getTrend(); //getTrend da implementare
         ctx.reply(trend, sceneKeyboard);
     });
 
     index.hears('Profilo personale', async ctx => {
-        console.info(`Navigation from index to Menu`);
+        console.info(`Navigation from Trend personale to Profilo personale`);
         await index.leave();
-        await ctx.scene.enter('menu'); //da cambiare con 'Profilo personale' scene
+        await ctx.scene.enter('Profilo personale'); //da cambiare con 'Profilo personale' scene
     });
 
     index.hears('Indietro', async ctx => {
-        console.info(`Navigation from index to Menu`);
+        console.info(`Navigation from Trend personale to Menu`);
         await index.leave();
         await ctx.scene.enter('menu');
     });

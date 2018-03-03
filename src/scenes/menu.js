@@ -15,14 +15,14 @@ module.exports = Scene => {
       .extra();
 
   index.enter(ctx => {
-    console.info(`Serving index to ${ctx.session.username}`);
+    console.info(`Serving menu to ${ctx.session.username}`);
 
     ctx.reply('Cosa vuoi visualizzare?', sceneKeyboard);
   });
 
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
-      console.info(`Navigation from index to ${elm}`);
+      console.info(`Navigation from menu to ${elm}`);
       await index.leave();
       await ctx.scene.enter(elm[0]);
     });

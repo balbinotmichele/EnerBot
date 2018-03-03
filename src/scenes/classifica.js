@@ -15,7 +15,7 @@ module.exports = Scene => {
     });
 
     index.hears('Indietro', async ctx => {
-        console.info(`Navigation from index to Menu`);
+        console.info(`Navigation from Classifica settimanale to Menu`);
         await index.leave();
         await ctx.scene.enter('menu');
     });
