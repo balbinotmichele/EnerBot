@@ -24,9 +24,9 @@ module.exports = Scene => {
 
     index.hears('Inserisci dati contatore gas', async ctx => {
         console.info(`Navigation from index to Menu`);
-        ctx.reply('Da implementare')
+        Markup.removeKeyboard(sceneKeyboard);
         await index.leave();
-        await ctx.scene.enter('menu'); //da cambiare con scena inserimento dati
+        await ctx.scene.enter('dati'); //da cambiare con scena inserimento dati
     });
 
   return index;
