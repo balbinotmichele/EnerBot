@@ -12,7 +12,6 @@ const {resolve} = require('path')
     }))
     .then(results => {
       return results.reduce((prev, curr) => {
-        debugger
         stage.register(curr);
         return stage;
       }, undefined);

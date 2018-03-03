@@ -12,18 +12,21 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
+<<<<<<< HEAD
     connection.query('SELECT Domanda FROM faq WHERE Gruppo LIKE 2', function (error, results, fields) {
+=======
+    connection.query('SELECT CodDomanda, Domanda FROM FAQ WHERE Gruppo LIKE 2', function (error, results, fields) {
+>>>>>>> de34f80b872b138c579f4c8faef4308d06e5dc6b
       if (error) {
-
         return reject(error);
       };
 
-      return resolve(results.map(elm => elm.Domanda));
+      return resolve(results.map(elm => (elm.CodDomanda + '. ' + elm.Domanda).toString()));
     });
 
     connection.end();
-});
-, getAnswer = (dom) => new Promise((resolve, reject) => {
+})
+, getAnswer = (coddom) => new Promise((resolve, reject) => {
   const risultati = []
     , connection = mysql.createConnection({
         host     : 'localhost',
@@ -32,13 +35,19 @@ const Markup = require('telegraf/markup')
         database : 'EnerbotDb'
     });
     connection.connect();
+<<<<<<< HEAD
 
     connection.query(`SELECT Risposta FROM faq WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
+=======
+    let query = `SELECT Risposta FROM FAQ WHERE CodDomanda = ${coddom}`
+    console.info(query);
+    connection.query(query, function (error, results, fields) {
+>>>>>>> de34f80b872b138c579f4c8faef4308d06e5dc6b
       if (error) {
         return reject(error);
       };
-
-      return resolve(results.map(elm => elm.Risposta));
+      debugger
+      return resolve(results[0].Risposta);
     });
 
     connection.end();
@@ -48,7 +57,7 @@ module.exports = async Scene => {
   const index = new Scene('Quesiti tecnico-procedurali')
     , sceneMenu = await findQuestions()
     , sceneKeyboard = Markup
-      .keyboard(sceneMenu)
+      .keyboard([...sceneMenu, 'Indietro'])
       .resize()
       .extra();
 
@@ -66,12 +75,9 @@ module.exports = async Scene => {
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
       console.info(`Navigation from Quesiti tecnico-procedurali to ${elm}`);
-      ctx.reply(getAnswer(elm[0]), sceneKeyboard);
+      ctx.reply(await getAnswer(elm[0]), sceneKeyboard);
     });
   });
 
-  function getRisposta(domanda) {
-      return "Risposta a "+domanda+" non implementata"
-  }
   return index;
 };
