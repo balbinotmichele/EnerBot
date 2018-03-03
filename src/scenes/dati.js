@@ -2,6 +2,7 @@ const Markup = require('telegraf/markup')
 , {setTimeout} = require('timers')
 , mysql = require('mysql')
 , getUserData = (userid) => new Promise((resolve, reject) => {
+    console.log(userid);
     const risultati = []
       , connection = mysql.createConnection({
           host     : 'localhost',
@@ -29,7 +30,8 @@ const Markup = require('telegraf/markup')
       connection.connect();
       let query = "INSERT INTO Lettura(Contatore, DataOra) VALUES ('"+contatore+"', '"+ new Date().toISOString() +"', '"+ codapp +"')";
       console.log(query);
-      connection.query(query, function (error, results, fields) {
+      connection.query(query, function (error, results, fields){
+          console.log(results);
       });
   
       connection.end();
@@ -50,7 +52,9 @@ module.exports = async Scene => {
 
     //index.hears(/[^abcdefghijklmnopqrstuvwxyz]/i, async ctx => {
     index.hears(/[0-9]/i, async ctx => {
-        insertData(ctx.message.text, getUserData(ctx.from.userId)[0]);
+        let codapp = await getUserData(ctx.from.userId)[0]; 
+        console.log(codapp);
+        await insertData(ctx.message.text, codapp);
         ctx.reply("Dati inseriti");
         await index.leave();
         await ctx.scene.enter('menu'); //da cambiare eventualmente

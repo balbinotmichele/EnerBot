@@ -12,17 +12,17 @@ const Markup = require('telegraf/markup')
     });
     connection.connect();
 
-    connection.query('SELECT Domanda FROM FAQ WHERE Gruppo LIKE 1', function (error, results, fields) {
+    connection.query('SELECT CodDomanda, Domanda FROM FAQ WHERE Gruppo LIKE 1', function (error, results, fields) {
       if (error) {
         return reject(error);
       };
 
-      return resolve(results.map(elm => elm.Domanda));
+      return resolve(results.map(elm => (elm.CodDomanda + '. ' + elm.Domanda).toString()));
     });
 
     connection.end();
-});
-, getAnswer = (dom) => new Promise((resolve, reject) => {
+})
+, getAnswer = (coddom) => new Promise((resolve, reject) => {
   const risultati = []
     , connection = mysql.createConnection({
         host     : 'localhost',
@@ -31,13 +31,14 @@ const Markup = require('telegraf/markup')
         database : 'EnerbotDb'
     });
     connection.connect();
-
-    connection.query(`SELECT Risposta FROM FAQ WHERE Domanda LIKE '${dom}'`, function (error, results, fields) {
+    let query = `SELECT Risposta FROM FAQ WHERE CodDomanda = ${coddom}`
+    console.info(query);
+    connection.query(query, function (error, results, fields) {
       if (error) {
         return reject(error);
       };
-
-      return resolve(results.map(elm => elm.Risposta));
+      debugger
+      return resolve(results[0].Risposta);
     });
 
     connection.end();
@@ -47,8 +48,8 @@ module.exports = async (Scene) => {
   const index = new Scene('Certificazione energetica')
     , sceneMenu = await findQuestions()
     , sceneKeyboard = Markup
-      .keyboard(sceneMenu)
-      .resize()
+    .keyboard([...sceneMenu, 'Indietro'])
+    .resize()
       .extra();
 
   index.enter(ctx => {
@@ -65,7 +66,10 @@ module.exports = async (Scene) => {
   sceneMenu.forEach(elm => { //setta l'ingresso in ogni scena
     index.hears(elm, async ctx => {
       console.info(`Navigation from Certificazione energetica to ${elm}`);
-      ctx.reply(getAnswer(elm[0]), sceneKeyboard);
+      debugger
+      let risp = await getAnswer(elm[0]);
+      console.log(risp);
+      ctx.reply(risp, sceneKeyboard);
     });
   });
 
